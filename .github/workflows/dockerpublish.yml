@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .  # 使用当前目录作为构建上下文
-          file: ./Pythpn/Dockerfile  # 指定 Dockerfile 路径
+          file: ./Dockerfile  # 指定 Dockerfile 路径
           push: true  # 推送镜像到 Docker Hub
           tags: ${{ steps.metadata.outputs.tags }}  # 使用生成的标签
           labels: ${{ steps.metadata.outputs.labels }}  # 使用生成的元数据标签
