@@ -1,4 +1,4 @@
-name: dockerpublish
+name: Docker Build and Push
 
 on:
   release:
@@ -9,30 +9,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout 代码
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. 登录 Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # 3. 生成镜像元数据（标签和标签）
       - name: Extract metadata for Docker image
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          images: miaodudu123/pythontest
+          images: miaodudu123/pythontest  # 替换为你的 Docker Hub 仓库名
           tags: |
             type=ref,event=branch
             type=ref,event=tag
             type=sha
 
+      # 4. 构建并推送 Docker 镜像
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
+          context: .  # 使用当前目录作为构建上下文
+          file: ./Dockerfile  # 指定 Dockerfile 路径
+          push: true  # 推送镜像到 Docker Hub
+          tags: ${{ steps.metadata.outputs.tags }}  # 使用生成的标签
+          labels: ${{ steps.metadata.outputs.labels }}  # 使用生成的元数据标签
