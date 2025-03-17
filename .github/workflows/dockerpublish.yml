@@ -35,8 +35,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .  # 使用当前目录作为构建上下文
-          file: ./Python/Dockerfile  # 指定 Dockerfile 路径
+          context: ./Python  # 使用 python 目录作为构建上下文
           push: true  # 推送镜像到 Docker Hub
           tags: ${{ steps.metadata.outputs.tags }}  # 使用生成的标签
           labels: ${{ steps.metadata.outputs.labels }}  # 使用生成的元数据标签
